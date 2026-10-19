@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE surveyContent SYSTEM "https://www.soscisurvey.de/templates/doctype.survey.dtd">
+<surveyContent version="2.4" type="question">
+<program>oFb</program>
+<version>3.7.06</version>
+<timestamp>2026-10-19 12:00:00</timestamp>
+<language>eng</language>
+<title>Quota control variables (completed/gender/age/education/region)</title>
+<description />
+<question>
+<description>Quota control variables (completed/gender/age/education/region)</description>
+<class>internal</class>
+<title />
+<explanation />
+<inputPosition>right</inputPosition>
+<order>default</order>
+<item>
+<text>completed</text>
+<attributes.specific program="ofb">
+<attr id="id">1</attr>
+<attr id="pos">1</attr>
+</attributes.specific>
+</item>
+<item>
+<text>gender_group</text>
+<attributes.specific program="ofb">
+<attr id="id">2</attr>
+<attr id="pos">2</attr>
+</attributes.specific>
+</item>
+<item>
+<text>age_group</text>
+<attributes.specific program="ofb">
+<attr id="id">3</attr>
+<attr id="pos">3</attr>
+</attributes.specific>
+</item>
+<item>
+<text>education_group</text>
+<attributes.specific program="ofb">
+<attr id="id">4</attr>
+<attr id="pos">4</attr>
+</attributes.specific>
+</item>
+<item>
+<text>region_group</text>
+<attributes.specific program="ofb">
+<attr id="id">5</attr>
+<attr id="pos">5</attr>
+</attributes.specific>
+</item>
+</question>
+</surveyContent>
