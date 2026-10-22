@@ -88,6 +88,8 @@ Germany only, so there is no country routing and one file per page:
 5. **final_page.html** — static HTML with the Bilendi Complete link.
 6. **reporting_page.php** — read-only debug output of filled/target/left per cell plus "not counted" per dimension (source of the daily quota update Bilendi asks for).
 
+`zeit-survey/test/` holds the version for the separate SoSci TEST project: every cell = 1, total = 10, dynamic Bilendi links (`&m=` + panelist ID from `DA03_RV1`, URL parameter `SPM_PANELIST_ID`), and the Complete link's ID passed to the Last Page (which cannot run PHP) via a `replace('%panelistID%', …)` placeholder set on the penultimate page. It contains only the pages that differ; `penultimate_write_page.php` is pasted unchanged.
+
 ### QC Variable Mapping
 
 | Item | Content | Values |
@@ -120,3 +122,9 @@ Germany only, so there is no country routing and one file per page:
 2. Add the quota CSV and a `Quota_control_internal-variable.xml` for that SoSci project.
 3. Copy the page files from the closest existing survey and adapt variables, answer codes and redirect URLs.
 4. Add the survey to the tables in `README.md` and this file.
+
+## QC Variables First, Then Copy the Project
+
+**Always create the QC internal variable in the SoSci project *before* pasting any quota code or copying the project (e.g. to a TEST project).** In the question catalog, create a section with the ID `QC` and import that survey's `Quota_control_internal-variable.xml` into it, so it becomes `QC01` (items `_01`-`_05`). A project copy only contains what the source project already has.
+
+Without it, every `statistic()` / `put()` on `QC01_xx` fails with *"Konnte Frage bzw. Item mit der Kennung QC01_01 nicht finden!"*. The reporting page still shows 0 (it casts with `(int)`), but the total quota page redirects **every** respondent to QuotaFull on page 2, and debug mode hides that page's debug output behind the redirect notice. This cost a long debugging session on the ZEIT TEST project (2026-10-22).

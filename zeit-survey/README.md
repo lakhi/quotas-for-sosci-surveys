@@ -13,6 +13,7 @@ PHP quota control code for the ZEIT project survey (Germany only) hosted on SoSc
 | `final_page.html` | End-of-survey page with the Bilendi Complete link |
 | `quota_zeit.csv` | Quota targets (Bilendi, best4planning, population-representative M/F 18-75) |
 | `Quota_control_internal-variable.xml` | SoSci import file for the internal variable `QC01` |
+| `test/` | TEST-project version: every quota cell = 1, total = 10, dynamic Bilendi links via `DA03_RV1` (see `test/README.md`) |
 
 ## Quotas (n=1000)
 
