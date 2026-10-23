@@ -1,10 +1,15 @@
 // ===== QUOTA CONFIG =====
-$QUOTA_TOTAL   = 1000;
-$QUOTAFULL_URL = 'https://survey.maximiles.com/static-quotasfull?p=98327_21a4610c';
+$QUOTA_TOTAL   = 1100;
+$PANELIST_ID   = (string) value('DA03_RV1');
+if ($PANELIST_ID == '') {
+    debug('WARNING: DA03_RV1 empty (no SPM_PANELIST_ID in the start URL) - Bilendi links get an empty &m=');
+}
+$QUOTAFULL_URL = 'https://survey.maximiles.com/quotasfull?p=98327_21a4610c&m=' . urlencode($PANELIST_ID);
 
 // Completed count (via internal variable)
 $finished = statistic('count', 'QC01_01', 1);
 
+debug('DA03_RV1 (panelist ID)=' . $PANELIST_ID);
 debug($finished);
 debug($QUOTA_TOTAL);
 

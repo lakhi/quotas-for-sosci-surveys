@@ -5,9 +5,9 @@ For the separate **TEST - ZEIT-Project** in SoSci only. Never paste these files 
 ## What differs from `zeit-survey/`
 
 - Every quota cell = **1** (gender, age, education, each of the 16 regions); total = **10**.
-- **Dynamic Bilendi links**: `&m=` carries the panelist ID from `DA03_RV1` (Bilendi ID: question `DA03`, a device and request variable that reads the URL parameter `SPM_PANELIST_ID`).
-- The **Complete link** gets the ID through a placeholder: SoSci's Last Page cannot run PHP, so `penultimate_complete_link.php` (a second PHP element on the penultimate page) calls `replace('%panelistID%', …)`, and `final_page.html` uses `%panelistID%` in its `href`.
-- **Test-only ID fallback**: a debug-mode start has no `SPM_PANELIST_ID` in its URL, so an empty `DA03_RV1` becomes `TEST-<case number>` (debug line `FALLBACK ID USED`). Do **not** copy this into production, where a missing ID must stay visible. To test the real path, add `&SPM_PANELIST_ID=TEST001` to the debug link (`…/?act=<token>&SPM_PANELIST_ID=TEST001`) before answering page 01.
+- **Test-only ID fallback**: a debug-mode start has no `SPM_PANELIST_ID` in its URL, so an empty `DA03_RV1` becomes `TEST-<case number>` (debug line `FALLBACK ID USED`). Production only emits `WARNING: DA03_RV1 empty`, so a missing ID stays visible. To test the real path, add `&SPM_PANELIST_ID=TEST001` to the debug link (`…/?act=<token>&SPM_PANELIST_ID=TEST001`) before answering page 01.
+
+Everything else matches production: dynamic Bilendi links (`&m=` + `DA03_RV1`), and the Complete link's ID passed to the Last Page through the `%panelistID%` placeholder set by `penultimate_complete_link.php`. `final_page.html` is identical to production.
 
 | Status | URL (`%SPM_PANELIST_ID%` replaced by `DA03_RV1`) |
 |--------|-----|

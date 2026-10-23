@@ -81,14 +81,16 @@ All countries share QC01 for the country-level count (distinguished by value), b
 
 Germany only, so there is no country routing and one file per page:
 
-1. **total_quota_page.php** — caps total completes (`QC01_01 = 1`) at 1000; redirects to QuotaFull if full.
+1. **total_quota_page.php** — caps total completes (`QC01_01 = 1`) at 1100; redirects to QuotaFull if full.
 2. **dimension_quota_page.php** — screens out under-18s and respondents living outside Germany (SD06 = 17), then checks gender / age / education / region quotas independently; redirects to QuotaFull if *any* dimension is full.
 3. *(survey questions run here)*
-4. **penultimate_write_page.php** — writes `QC01_01 = 1` for every complete, plus the four group codes.
-5. **final_page.html** — static HTML with the Bilendi Complete link.
+4. **penultimate_write_page.php** — writes `QC01_01 = 1` for every complete, plus the four group codes. **penultimate_complete_link.php** is a second PHP element on the same page: it sets the `%panelistID%` placeholder, because the Last Page cannot run PHP.
+5. **final_page.html** — Last Page HTML with the dynamic Bilendi Complete link (`&m=%panelistID%`).
+
+**sd17_screenout.php** goes on the page after the screening question SD17 and redirects its screenout answer to the dynamic Screenout link (the answer code is still a placeholder).
 6. **reporting_page.php** — read-only debug output of filled/target/left per cell plus "not counted" per dimension (source of the daily quota update Bilendi asks for).
 
-`zeit-survey/test/` holds the version for the separate SoSci TEST project: every cell = 1, total = 10, dynamic Bilendi links (`&m=` + panelist ID from `DA03_RV1`, URL parameter `SPM_PANELIST_ID`), and the Complete link's ID passed to the Last Page (which cannot run PHP) via a `replace('%panelistID%', …)` placeholder set on the penultimate page. It contains only the pages that differ; `penultimate_write_page.php` is pasted unchanged.
+`zeit-survey/test/` holds the version for the separate SoSci TEST project: every cell = 1, total = 10, and a test-only fallback panelist ID (`TEST-<case number>`) for debug-mode starts. Everything else (dynamic links, placeholder) matches production; the production pages were derived from these tested files.
 
 ### QC Variable Mapping
 
@@ -111,10 +113,10 @@ Germany only, so there is no country routing and one file per page:
 
 - **Group 0 = not counted**: every dimension maps bypassed answers to group 0, which is neither checked nor written.
 - **Map by answer code, not order**: SD06 codes are not the official Bundesland numbers (03 = Mecklenburg-Vorpommern), and SD08 codes 9 and 10 are out of sequence, so education uses explicit code lists, never ranges.
-- **Age**: under 18 → Bilendi Screenout redirect (also catches an unanswered age); 76+ counts in the top band (60+), although Bilendi's band is 60-75.
-- **Quotas at 100%**: Bilendi suggested programming 110% as a quality buffer; the team chose 100%. Bilendi's education split sums to 99%, so hoch was raised from 39% to 40%.
+- **Age**: under 18 → Bilendi Screenout redirect (also catches an unanswered age); 76+ counts in the top band (60+), although Bilendi's band is 60-75; the researcher confirmed leaving it open (2026-10-22).
+- **Quotas at 110%** (n=1100): every cell is the Bilendi target ×1.1, so the quality buffer is collected directly (researcher's decision, 2026-10-22). All cells are whole numbers and each dimension sums to 1100. Bilendi's education split sums to 99%, so hoch was raised from 39% to 40%.
 - **Region 17** (lives outside Germany) → Bilendi Screenout redirect, in the same `if` as under-18s.
-- **Static Bilendi redirect links** (cookie-based, no panelist ID) were chosen over the dynamic `&m=` links. The QuotaFull URL lives in total_quota_page and dimension_quota_page, the Screenout URL only in dimension_quota_page, and the Complete URL in final_page.
+- **Dynamic Bilendi redirect links**: `&m=` carries the panelist ID from `DA03_RV1` (question `DA03`, a device and request variable reading the URL parameter `SPM_PANELIST_ID`; it must be on page 01, because GET parameters are only read on the first page). The QuotaFull URL lives in total_quota_page and dimension_quota_page, the Screenout URL in dimension_quota_page and sd17_screenout, and the Complete URL in final_page (via the placeholder). An empty ID only emits a debug warning: no fallback in production, so a missing ID stays visible.
 
 ## When Adding a New Survey
 

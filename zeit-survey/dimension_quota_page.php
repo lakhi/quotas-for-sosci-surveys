@@ -1,31 +1,35 @@
-// ===== ZEIT QUOTA CONFIG =====
-$QUOTAFULL_URL = 'https://survey.maximiles.com/static-quotasfull?p=98327_21a4610c';
-$SCREENOUT_URL = 'https://survey.maximiles.com/static-screenout?p=98327_69cadaeb';
-$QUOTA_GENDER  = [1 => 500, 2 => 500];
-$QUOTA_AGE     = [1 => 180, 2 => 170, 3 => 160, 4 => 210, 5 => 280];
-$QUOTA_EDU     = [1 => 290, 2 => 310, 3 => 400];
+// ===== ZEIT QUOTA CONFIG (110%, n=1100) =====
+$PANELIST_ID   = (string) value('DA03_RV1');
+if ($PANELIST_ID == '') {
+    debug('WARNING: DA03_RV1 empty (no SPM_PANELIST_ID in the start URL) - Bilendi links get an empty &m=');
+}
+$QUOTAFULL_URL = 'https://survey.maximiles.com/quotasfull?p=98327_21a4610c&m=' . urlencode($PANELIST_ID);
+$SCREENOUT_URL = 'https://survey.maximiles.com/screenout?p=98327_69cadaeb&m=' . urlencode($PANELIST_ID);
+$QUOTA_GENDER  = [1 => 550, 2 => 550];
+$QUOTA_AGE     = [1 => 198, 2 => 187, 3 => 176, 4 => 231, 5 => 308];
+$QUOTA_EDU     = [1 => 319, 2 => 341, 3 => 440];
 // keys are the SD06 answer codes, not the official Bundesland numbers
 $QUOTA_REGION  = [
-    1  => 40,  // Schleswig-Holstein
-    2  => 20,  // Hamburg
-    3  => 20,  // Mecklenburg-Vorpommern
-    4  => 30,  // Brandenburg
-    5  => 40,  // Berlin
-    6  => 20,  // Sachsen-Anhalt
-    7  => 10,  // Bremen
-    8  => 100, // Niedersachsen
-    9  => 220, // Nordrhein-Westfalen
-    10 => 70,  // Hessen
-    11 => 30,  // Thüringen
-    12 => 50,  // Sachsen
-    13 => 50,  // Rheinland-Pfalz
-    14 => 10,  // Saarland
-    15 => 130, // Baden-Württemberg
-    16 => 160, // Bayern
+    1  => 44,  // Schleswig-Holstein
+    2  => 22,  // Hamburg
+    3  => 22,  // Mecklenburg-Vorpommern
+    4  => 33,  // Brandenburg
+    5  => 44,  // Berlin
+    6  => 22,  // Sachsen-Anhalt
+    7  => 11,  // Bremen
+    8  => 110, // Niedersachsen
+    9  => 242, // Nordrhein-Westfalen
+    10 => 77,  // Hessen
+    11 => 33,  // Thüringen
+    12 => 55,  // Sachsen
+    13 => 55,  // Rheinland-Pfalz
+    14 => 11,  // Saarland
+    15 => 143, // Baden-Württemberg
+    16 => 176, // Bayern
 ];
 
 // ===== DEBUG RAW VALUES =====
-debug('RAW: SD05=' . value('SD05') . ', SD03_01=' . value('SD03_01') . ', SD08=' . value('SD08') . ', SD06=' . value('SD06'));
+debug('RAW: DA03_RV1=' . $PANELIST_ID . ', SD05=' . value('SD05') . ', SD03_01=' . value('SD03_01') . ', SD08=' . value('SD08') . ', SD06=' . value('SD06'));
 
 
 // current respondent groups (group 0 = not counted for that dimension)
@@ -135,9 +139,9 @@ debug('HITS: gender=' . $genderHitStr . ', age=' . $ageHitStr . ', edu=' . $eduH
 
 // one if/elseif so a respondent can only ever get one redirect
 if ($age < 18 || $region == 17) {
-    debug('TRIGGER: outside target group (SD03_01=' . $age . ', SD06=' . $region . ') - redirecting to screenout');
+    debug('TRIGGER: outside target group (SD03_01=' . $age . ', SD06=' . $region . ') - redirecting to screenout: ' . $SCREENOUT_URL);
     redirect($SCREENOUT_URL);
 } elseif ($genderQuotaFull || $ageQuotaFull || $eduQuotaFull || $regionQuotaFull) {
-    debug('TRIGGER: ZEIT dimension quota hit - redirecting to quotafull');
+    debug('TRIGGER: ZEIT dimension quota hit - redirecting to quotafull: ' . $QUOTAFULL_URL);
     redirect($QUOTAFULL_URL);
 }
