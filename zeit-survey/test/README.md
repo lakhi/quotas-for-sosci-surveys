@@ -5,15 +5,30 @@ For the separate **TEST - ZEIT-Project** in SoSci only. Never paste these files 
 ## What differs from `zeit-survey/`
 
 - Every quota cell = **1** (gender, age, education, each of the 16 regions); total = **10**.
-- **Test-only ID fallback**: a debug-mode start has no `SPM_PANELIST_ID` in its URL, so an empty `DA03_RV1` becomes `TEST-<case number>` (debug line `FALLBACK ID USED`). Production only emits `WARNING: DA03_RV1 empty`, so a missing ID stays visible. To test the real path, add `&SPM_PANELIST_ID=TEST001` to the debug link (`…/?act=<token>&SPM_PANELIST_ID=TEST001`) before answering page 01.
+- **Test-only ID fallback**: a debug-mode start has no `SPM_PANELIST_ID` in its URL, so an empty `DA03_RV1` becomes `TEST-<case number>` (debug line `FALLBACK ID USED`). Production only emits `WARNING: DA03_RV1 empty`, so a missing ID stays visible. To test the real path with an ID, see *Testing the panelist ID* below.
 
 Everything else matches production: dynamic Bilendi links (`&m=` + `DA03_RV1`), and the Complete link's ID passed to the Last Page through the `%panelistID%` placeholder set by `penultimate_complete_link.php`. `final_page.html` is identical to production.
 
+Final links for Bilendi project 175243 (same as production; the unused Quality/Speeder/Duplicate/GeoIP links are listed in `../README.md`).
+
 | Status | URL (`%SPM_PANELIST_ID%` replaced by `DA03_RV1`) |
 |--------|-----|
-| Complete | `https://survey.maximiles.com/complete?p=98327_8107c9fe&m=%SPM_PANELIST_ID%` |
-| QuotaFull | `https://survey.maximiles.com/quotasfull?p=98327_21a4610c&m=%SPM_PANELIST_ID%` |
-| Screenout | `https://survey.maximiles.com/screenout?p=98327_69cadaeb&m=%SPM_PANELIST_ID%` |
+| Complete | `https://survey.maximiles.com/complete?p=175243_9d4a1cee&m=%SPM_PANELIST_ID%` |
+| QuotaFull | `https://survey.maximiles.com/quotasfull?p=175243_c3d988f3&m=%SPM_PANELIST_ID%` |
+| Screenout | `https://survey.maximiles.com/screenout?p=175243_83181740&m=%SPM_PANELIST_ID%` |
+
+## Testing the panelist ID (verified 2026-11-12)
+
+URL parameters can only be tested through the **public link**. The admin preview (`index.php?o=Questionnaire&a=preview…`) does not pass them on, and editing the link of a case that has already started (`index.php?i=…&rnd=…`) gives *"Ungültiger Link"*.
+
+1. TEST project only: *Project Settings → Publish Survey → Survey administration period*, from today to a few days later, then save. Without a period the public link shows *"Fragebogen noch nicht verfügbar"*.
+2. Open `https://sosci.univie.ac.at/zeit-project005405/?SPM_PANELIST_ID=TEST001` (the TEST project's folder) in a private window. Use a new ID and a new private window for every run, otherwise SoSci continues the previous case.
+3. Check:
+   - Screenout run (age 16) lands on `…/screenout?p=175243_83181740&m=TEST001`.
+   - In a complete run, "Weiter" on the last page links to `…/complete?p=175243_9d4a1cee&m=TEST002`.
+   - *Collected data* shows the IDs in `DA03_RV1`.
+   These runs show no debug output, so the redirect addresses and `DA03_RV1` are the check.
+4. Afterwards, delete the test data (completes from the public link fill the TEST cells), and clear both period dates to return to pretest mode.
 
 ## Which file goes on which page
 

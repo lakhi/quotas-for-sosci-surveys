@@ -4,7 +4,7 @@
 // TODO: set $SD17_SCREENOUT_CODE to SD17's screenout answer code (question catalog → SD17 → answer options).
 $SD17_SCREENOUT_CODE = 0;
 $PANELIST_ID   = (string) value('DA03_RV1');
-$SCREENOUT_URL = 'https://survey.maximiles.com/screenout?p=98327_69cadaeb&m=' . urlencode($PANELIST_ID);
+$SCREENOUT_URL = 'https://survey.maximiles.com/screenout?p=175243_83181740&m=' . urlencode($PANELIST_ID);
 
 debug('RAW: DA03_RV1=' . $PANELIST_ID . ', SD17=' . value('SD17'));
 

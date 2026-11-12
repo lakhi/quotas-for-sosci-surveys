@@ -5,8 +5,8 @@ if ($PANELIST_ID == '') {
     $PANELIST_ID = 'TEST-' . caseNumber();
     debug('FALLBACK ID USED: ' . $PANELIST_ID);
 }
-$QUOTAFULL_URL = 'https://survey.maximiles.com/quotasfull?p=98327_21a4610c&m=' . urlencode($PANELIST_ID);
-$SCREENOUT_URL = 'https://survey.maximiles.com/screenout?p=98327_69cadaeb&m=' . urlencode($PANELIST_ID);
+$QUOTAFULL_URL = 'https://survey.maximiles.com/quotasfull?p=175243_c3d988f3&m=' . urlencode($PANELIST_ID);
+$SCREENOUT_URL = 'https://survey.maximiles.com/screenout?p=175243_83181740&m=' . urlencode($PANELIST_ID);
 $QUOTA_GENDER  = [1 => 1, 2 => 1];
 $QUOTA_AGE     = [1 => 1, 2 => 1, 3 => 1, 4 => 1, 5 => 1];
 $QUOTA_EDU     = [1 => 1, 2 => 1, 3 => 1];

@@ -3,8 +3,8 @@ $PANELIST_ID   = (string) value('DA03_RV1');
 if ($PANELIST_ID == '') {
     debug('WARNING: DA03_RV1 empty (no SPM_PANELIST_ID in the start URL) - Bilendi links get an empty &m=');
 }
-$QUOTAFULL_URL = 'https://survey.maximiles.com/quotasfull?p=98327_21a4610c&m=' . urlencode($PANELIST_ID);
-$SCREENOUT_URL = 'https://survey.maximiles.com/screenout?p=98327_69cadaeb&m=' . urlencode($PANELIST_ID);
+$QUOTAFULL_URL = 'https://survey.maximiles.com/quotasfull?p=175243_c3d988f3&m=' . urlencode($PANELIST_ID);
+$SCREENOUT_URL = 'https://survey.maximiles.com/screenout?p=175243_83181740&m=' . urlencode($PANELIST_ID);
 $QUOTA_GENDER  = [1 => 550, 2 => 550];
 $QUOTA_AGE     = [1 => 198, 2 => 187, 3 => 176, 4 => 231, 5 => 308];
 $QUOTA_EDU     = [1 => 319, 2 => 341, 3 => 440];

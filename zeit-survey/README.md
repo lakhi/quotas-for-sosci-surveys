@@ -10,7 +10,7 @@ PHP quota control code for the ZEIT project survey (Germany only) hosted on SoSc
 | `dimension_quota_page.php` | Screens out under-18s and respondents living outside Germany, then checks gender/age/education/region quotas and redirects to QuotaFull |
 | `penultimate_write_page.php` | Writes completed interview data to the internal QC variables |
 | `penultimate_complete_link.php` | Second PHP element on the penultimate page: sets the `%panelistID%` placeholder for the Complete link |
-| `final_page.html` | Last Page text with the dynamic Bilendi Complete link |
+| `final_page.html` | Last Page text: the researcher's debrief text plus the dynamic Bilendi Complete link |
 | `sd17_screenout.php` | Screenout redirect for the screening question SD17 (answer code still a placeholder) |
 | `reporting_page.php` | Reporting/debug output: filled/target/left per quota cell, plus completes not counted in each dimension |
 | `quota_zeit.csv` | Quota targets (Bilendi, best4planning, population-representative M/F 18-75), programmed at 110% |
@@ -55,21 +55,32 @@ Gender, age, education and region are checked independently; a respondent is red
 
 ## Bilendi Redirect Links (dynamic)
 
-`%SPM_PANELIST_ID%` is replaced by `urlencode(value('DA03_RV1'))`.
+Final links for Bilendi project 175243 (received 2026-11-12). `%SPM_PANELIST_ID%` is replaced by `urlencode(value('DA03_RV1'))`.
+
+| Status | Used in | URL |
+|--------|---------|-----|
+| Complete | `final_page.html` (ID via `penultimate_complete_link.php`) | `https://survey.maximiles.com/complete?p=175243_9d4a1cee&m=%SPM_PANELIST_ID%` |
+| QuotaFull | `total_quota_page.php`, `dimension_quota_page.php` | `https://survey.maximiles.com/quotasfull?p=175243_c3d988f3&m=%SPM_PANELIST_ID%` |
+| Screenout | `dimension_quota_page.php`, `sd17_screenout.php` | `https://survey.maximiles.com/screenout?p=175243_83181740&m=%SPM_PANELIST_ID%` |
+
+Bilendi also sent these four, which are **not used**: the survey has no in-survey check that would send anyone there (low-quality cases are removed after fieldwork from the 110% buffer). Kept here in case a check is added later.
 
 | Status | URL |
 |--------|-----|
-| Complete | `https://survey.maximiles.com/complete?p=98327_8107c9fe&m=%SPM_PANELIST_ID%` |
-| QuotaFull | `https://survey.maximiles.com/quotasfull?p=98327_21a4610c&m=%SPM_PANELIST_ID%` |
-| Screenout | `https://survey.maximiles.com/screenout?p=98327_69cadaeb&m=%SPM_PANELIST_ID%` |
+| Quality | `https://survey.maximiles.com/quality?p=175243&m=%SPM_PANELIST_ID%` |
+| Speeder | `https://survey.maximiles.com/speeder?p=175243&m=%SPM_PANELIST_ID%` |
+| Duplicate | `https://survey.maximiles.com/duplicate?p=175243&m=%SPM_PANELIST_ID%` |
+| GeoIP | `https://survey.maximiles.com/geoip?p=175243&m=%SPM_PANELIST_ID%` |
 
 ## Before Going Live
 
 - [ ] `QC01` exists: question-catalog section `QC` with `Quota_control_internal-variable.xml` imported.
 - [ ] `DA03` is on page 01 (GET parameters are only read on the first page).
 - [ ] SD17's screenout answer code is filled into `sd17_screenout.php`, and any old SoSci filter with a static Screenout URL is removed.
-- [ ] The links match the final ones Bilendi sends; ask Bilendi for the 4th link (likely "Quality") and where it is needed.
-- [ ] One debug run with `&SPM_PANELIST_ID=TEST001` appended to the start link shows `m=TEST001` in every redirect.
+- [x] The links are Bilendi's final ones (project 175243, 2026-11-12).
+- [ ] Every page with a link is re-pasted after the switch to project 175243: total quota, dimension quota, page after SD17, penultimate page (2nd PHP element) and the Last Page text.
+- [x] TEST project: the public link with `?SPM_PANELIST_ID=TEST001` fills `DA03_RV1` and puts `m=TEST001` into the redirects (2026-11-12, see `test/README.md`). The admin preview cannot carry URL parameters.
+- [ ] After launch, the first real cases show Bilendi's IDs in `DA03_RV1` (*Collected data*).
 
 ## Notes
 - `SD03` (age) must be a required question with a SoSci response check of numbers only, range 1-110: an unanswered or non-numeric age reads as below 18 and is screened out, and a typed birth year (e.g. 1985) would count as 60+. Keep the minimum at 1, not 18, so under-18s are screened out instead of typing 18 to get past the check.
