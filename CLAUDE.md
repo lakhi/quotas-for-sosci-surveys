@@ -89,7 +89,7 @@ Germany only, so there is no country routing and one file per page:
 
 **sd17_screenout.php** goes on the page after the screening question SD17 and redirects its screenout answer to the dynamic Screenout link (the answer code is still a placeholder).
 
-**NRscreenout.php** goes on the page after the pre-screening page and sends NR01 = 1/2, NR03 = 1 or NR04 = 2 to the same dynamic Screenout link (one `if`, so at most one redirect). It is identical for production and TEST, so there is no copy in `test/`.
+**NRscreenout.php** goes on the page after the pre-screening page and sends NR01 = 1, NR03 = 1 or NR04 = 2 to the same dynamic Screenout link (one `if`, so at most one redirect). It is identical for production and TEST, so there is no copy in `test/`.
 6. **reporting_page.php** — read-only debug output of filled/target/left per cell plus "not counted" per dimension (source of the daily quota update Bilendi asks for).
 
 `zeit-survey/test/` holds the version for the separate SoSci TEST project: every cell = 1, total = 10, and a test-only fallback panelist ID (`TEST-<case number>`) for debug-mode starts. Everything else (dynamic links, placeholder) matches production; the production pages were derived from these tested files.

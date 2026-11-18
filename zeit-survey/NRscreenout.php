@@ -13,7 +13,7 @@ $nr03 = (int) value('NR03');
 $nr04 = (int) value('NR04');
 
 // screenout conditions (from the filters)
-$nr01Hit = ($nr01 == 1 || $nr01 == 2);
+$nr01Hit = ($nr01 == 1);
 $nr03Hit = ($nr03 == 1);
 $nr04Hit = ($nr04 == 2);
 

@@ -12,7 +12,7 @@ PHP quota control code for the ZEIT project survey (Germany only) hosted on SoSc
 | `penultimate_complete_link.php` | Second PHP element on the penultimate page: sets the `%panelistID%` placeholder for the Complete link |
 | `final_page.html` | Last Page text: the researcher's debrief text plus the dynamic Bilendi Complete link |
 | `sd17_screenout.php` | Screenout redirect for the screening question SD17 (answer code still a placeholder) |
-| `NRscreenout.php` | Screenout redirect after the pre-screening page: NR01 = 1 or 2, NR03 = 1 or NR04 = 2 (same file for production and TEST) |
+| `NRscreenout.php` | Screenout redirect after the pre-screening page: NR01 = 1, NR03 = 1 or NR04 = 2 (same file for production and TEST) |
 | `reporting_page.php` | Reporting/debug output: filled/target/left per quota cell, plus completes not counted in each dimension |
 | `quota_zeit.csv` | Quota targets (Bilendi, best4planning, population-representative M/F 18-75), programmed at 110% |
 | `Quota_control_internal-variable.xml` | SoSci import file for the internal variable `QC01` |
