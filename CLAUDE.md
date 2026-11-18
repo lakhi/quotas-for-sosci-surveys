@@ -88,6 +88,8 @@ Germany only, so there is no country routing and one file per page:
 5. **final_page.html** — Last Page HTML with the dynamic Bilendi Complete link (`&m=%panelistID%`).
 
 **sd17_screenout.php** goes on the page after the screening question SD17 and redirects its screenout answer to the dynamic Screenout link (the answer code is still a placeholder).
+
+**NRscreenout.php** goes on the page after the pre-screening page and sends NR01 = 1/2, NR03 = 1 or NR04 = 2 to the same dynamic Screenout link (one `if`, so at most one redirect). It is identical for production and TEST, so there is no copy in `test/`.
 6. **reporting_page.php** — read-only debug output of filled/target/left per cell plus "not counted" per dimension (source of the daily quota update Bilendi asks for).
 
 `zeit-survey/test/` holds the version for the separate SoSci TEST project: every cell = 1, total = 10, and a test-only fallback panelist ID (`TEST-<case number>`) for debug-mode starts. Everything else (dynamic links, placeholder) matches production; the production pages were derived from these tested files.
@@ -116,7 +118,7 @@ Germany only, so there is no country routing and one file per page:
 - **Age**: under 18 → Bilendi Screenout redirect (also catches an unanswered age); 76+ counts in the top band (60+), although Bilendi's band is 60-75; the researcher confirmed leaving it open (2026-10-22).
 - **Quotas at 110%** (n=1100): every cell is the Bilendi target ×1.1, so the quality buffer is collected directly (researcher's decision, 2026-10-22). All cells are whole numbers and each dimension sums to 1100. Bilendi's education split sums to 99%, so hoch was raised from 39% to 40%.
 - **Region 17** (lives outside Germany) → Bilendi Screenout redirect, in the same `if` as under-18s.
-- **Dynamic Bilendi redirect links**: `&m=` carries the panelist ID from `DA03_RV1` (question `DA03`, a device and request variable reading the URL parameter `SPM_PANELIST_ID`; it must be on page 01, because GET parameters are only read on the first page). The QuotaFull URL lives in total_quota_page and dimension_quota_page, the Screenout URL in dimension_quota_page and sd17_screenout, and the Complete URL in final_page (via the placeholder). The final links belong to Bilendi project 175243 (2026-11-12); Bilendi's Quality, Speeder, Duplicate and GeoIP links are documented in the README but not used, because the survey has no check that leads there.
+- **Dynamic Bilendi redirect links**: `&m=` carries the panelist ID from `DA03_RV1` (question `DA03`, a device and request variable reading the URL parameter `SPM_PANELIST_ID`; it must be on page 01, because GET parameters are only read on the first page). The QuotaFull URL lives in total_quota_page and dimension_quota_page, the Screenout URL in dimension_quota_page, sd17_screenout and NRscreenout, and the Complete URL in final_page (via the placeholder). The final links belong to Bilendi project 175243 (2026-11-12); Bilendi's Quality, Speeder, Duplicate and GeoIP links are documented in the README but not used, because the survey has no check that leads there.
 - **Testing URL parameters**: neither the admin preview nor the link of a case that has already started (`index.php?i=…`) can carry `SPM_PANELIST_ID`. Set a survey administration period on the TEST project and open its public link with `?SPM_PANELIST_ID=TEST001` (steps in `zeit-survey/test/README.md`). An empty ID only emits a debug warning: no fallback in production, so a missing ID stays visible.
 
 ## When Adding a New Survey

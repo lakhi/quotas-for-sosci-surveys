@@ -12,6 +12,7 @@ PHP quota control code for the ZEIT project survey (Germany only) hosted on SoSc
 | `penultimate_complete_link.php` | Second PHP element on the penultimate page: sets the `%panelistID%` placeholder for the Complete link |
 | `final_page.html` | Last Page text: the researcher's debrief text plus the dynamic Bilendi Complete link |
 | `sd17_screenout.php` | Screenout redirect for the screening question SD17 (answer code still a placeholder) |
+| `NRscreenout.php` | Screenout redirect after the pre-screening page: NR01 = 1 or 2, NR03 = 1 or NR04 = 2 (same file for production and TEST) |
 | `reporting_page.php` | Reporting/debug output: filled/target/left per quota cell, plus completes not counted in each dimension |
 | `quota_zeit.csv` | Quota targets (Bilendi, best4planning, population-representative M/F 18-75), programmed at 110% |
 | `Quota_control_internal-variable.xml` | SoSci import file for the internal variable `QC01` |
@@ -23,6 +24,7 @@ PHP quota control code for the ZEIT project survey (Germany only) hosted on SoSc
 |------|-----------|
 | page 01 | question `DA03` (device and request variables, reads `SPM_PANELIST_ID`) |
 | page after SD17 | `sd17_screenout.php` |
+| page after the pre-screening page (NR01, NR03, NR04) | `NRscreenout.php` |
 | total quota page | `total_quota_page.php` |
 | dimension quota page | `dimension_quota_page.php` |
 | penultimate write page | `penultimate_write_page.php` |
@@ -61,7 +63,7 @@ Final links for Bilendi project 175243 (received 2026-11-12). `%SPM_PANELIST_ID%
 |--------|---------|-----|
 | Complete | `final_page.html` (ID via `penultimate_complete_link.php`) | `https://survey.maximiles.com/complete?p=175243_9d4a1cee&m=%SPM_PANELIST_ID%` |
 | QuotaFull | `total_quota_page.php`, `dimension_quota_page.php` | `https://survey.maximiles.com/quotasfull?p=175243_c3d988f3&m=%SPM_PANELIST_ID%` |
-| Screenout | `dimension_quota_page.php`, `sd17_screenout.php` | `https://survey.maximiles.com/screenout?p=175243_83181740&m=%SPM_PANELIST_ID%` |
+| Screenout | `dimension_quota_page.php`, `sd17_screenout.php`, `NRscreenout.php` | `https://survey.maximiles.com/screenout?p=175243_83181740&m=%SPM_PANELIST_ID%` |
 
 Bilendi also sent these four, which are **not used**: the survey has no in-survey check that would send anyone there (low-quality cases are removed after fieldwork from the 110% buffer). Kept here in case a check is added later.
 
@@ -78,7 +80,7 @@ Bilendi also sent these four, which are **not used**: the survey has no in-surve
 - [ ] `DA03` is on page 01 (GET parameters are only read on the first page).
 - [ ] SD17's screenout answer code is filled into `sd17_screenout.php`, and any old SoSci filter with a static Screenout URL is removed.
 - [x] The links are Bilendi's final ones (project 175243, 2026-11-12).
-- [ ] Every page with a link is re-pasted after the switch to project 175243: total quota, dimension quota, page after SD17, penultimate page (2nd PHP element) and the Last Page text.
+- [ ] Every page with a link is re-pasted after the switch to project 175243: total quota, dimension quota, page after SD17, page after the pre-screening page, penultimate page (2nd PHP element) and the Last Page text.
 - [x] TEST project: the public link with `?SPM_PANELIST_ID=TEST001` fills `DA03_RV1` and puts `m=TEST001` into the redirects (2026-11-12, see `test/README.md`). The admin preview cannot carry URL parameters.
 - [ ] After launch, the first real cases show Bilendi's IDs in `DA03_RV1` (*Collected data*).
 
